@@ -11,7 +11,7 @@ import models.*;
  */
 public class PessoaDAO {
     
-    void registerNewPerson(Pessoa p){
+    public void  registerNewPerson(Pessoa p){
     
         
     }
