@@ -1,26 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package alugueumavagainterfacegrafica;
 
 import javax.swing.JOptionPane;
 import models.*;
 import dao.*;
+import java.io.*;
 
-/**
- *String
- * @author Samuelson
- */
 public class MenuCadastrarPessoa extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaCadastroCliente
-     */
+    File arquivo = new File("arquivo.txt");
+
     public MenuCadastrarPessoa() {
         initComponents();
+    }
+
+    public String salvar() {
+        String nome = txtNomeCadastrar.getText();
+        String sexo = boxSexoCadastrar.getSelectedItem().toString();
+        Double saldo = Double.parseDouble(txtSaldoCadastrarNome.getText().replace("R$", "").replace(".", ""));
+        String cpf = txtCpfCadastrar.getText();
+        try {
+            FileWriter fw = new FileWriter(arquivo, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            fw.write(nome + ";" + sexo + ";" + cpf + ";" + saldo + ";\n");
+            fw.close();
+            bw.close();
+
+        } catch (Exception e) {
+            System.out.println("Erro ao escrever o arquivo");
+        }
+        return "CADASTRADO COM SUCESSO";
     }
 
     /**
@@ -48,7 +56,7 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro Cliente");
+        setTitle("Cadastrar Pessoa");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Pessoais"));
 
@@ -56,7 +64,7 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNomeCadastrarActionPerformed(evt);
             }
-        });String
+        });
 
         try {
             txtCpfCadastrar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
@@ -137,7 +145,7 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
                 .addGap(18, 18, 18))
         );
 
-        btnSalvarCadastroPessoa.setText("Salvar");
+        btnSalvarCadastroPessoa.setText("Cadastrar");
         btnSalvarCadastroPessoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarCadastroPessoaActionPerformed(evt);
@@ -161,7 +169,7 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/door_out.png"))); // NOI18N
         jButton3.setText("Sair");
-        jButton3.addActionListeStringner(new java.awt.event.ActionListener() {
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
@@ -174,7 +182,7 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponeStringnt(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton2))
@@ -190,7 +198,7 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jButtStringon2)
+                .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
@@ -218,24 +226,11 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarCadastroPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarCadastroPessoaActionPerformed
-        String nome = txtNomeCadastrar.getText();
-        String sexo = boxSexoCadastrar.getSelectedItem().toString();
-        Double saldo = (Double) txtSaldoCadastrarNome.getValue();
-        String cpf = txtCpfCadastrar.getText();
-        Pessoa pessoa = new Pessoa(nome,cpf,saldo,sexo);
-        PessoaDAO pDao = new PessoaDAO();
-        try {
-            
-        } catch(){
-            
-        }
-        pDao.registerNewPerson(pessoa);
-        
-        
-        
-        
-        
-        
+        JOptionPane.showMessageDialog(null, salvar());
+        txtNomeCadastrar.setText("");
+        txtCpfCadastrar.setText("");
+        txtSaldoCadastrarNome.setText("");
+
     }//GEN-LAST:event_btnSalvarCadastroPessoaActionPerformed
 
     private void boxSexoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxSexoCadastrarActionPerformed
@@ -272,6 +267,7 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

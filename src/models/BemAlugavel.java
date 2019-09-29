@@ -14,6 +14,10 @@ public abstract class BemAlugavel {
         this.preco = valor;
     }
     
+    public BemAlugavel() {
+        
+    }
+    
     public Pessoa getDono() {
         return dono;
     }

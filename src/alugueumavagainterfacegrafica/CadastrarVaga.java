@@ -1,25 +1,81 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package alugueumavagainterfacegrafica;
 
+import Excecoes.ErroDeLeituraException;
 import javax.swing.JOptionPane;
-import alugueumavagainterfacegrafica.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import models.LerArquivo;
+import models.Pessoa;
+import models.Vaga;
 
 /**
  *
  * @author Samuelson
  */
 public class CadastrarVaga extends javax.swing.JFrame {
+    File arquivo = new File("vaga.txt");
+    Pessoa pessoas = new Pessoa();
+    private LerArquivo lerArquivo;
 
     /**
      * Creates new form TelaCadastroCliente
      */
-    public CadastrarVaga() {
+    public CadastrarVaga(){
+        this.lerArquivo = new LerArquivo();
         initComponents();
+    }
+
+    /**
+     *
+     * @param cpf
+     * @return
+     * @throws ErroDeLeituraException
+     */
+    public boolean compararPessoa(String cpf) throws ErroDeLeituraException {
+        List<Pessoa> pessoas = lerArquivo.read();
+        for (int i = 0; i < pessoas.size(); i++) {
+            Pessoa p = (Pessoa) pessoas.get(i);
+            if (p.getCpf().equals(cpf)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String salvarVaga() throws ErroDeLeituraException {
+        List<Pessoa> pessoas = lerArquivo.read();
+        String dono = null;
+        String estadoVaga = estadoLivre.isSelected() ? "Livre" : "Indisponivel";
+        for (int i = 0; i < pessoas.size(); i++) {
+            Pessoa p = (Pessoa) pessoas.get(i);
+            if (p.getCpf().equals(txtCpfVaga.getText())) {
+                dono = p.getNome();
+            }
+        }
+
+        Double valorAlguel = Double.parseDouble(txtValorAluguel.getText().replace("R$", "").replace(".", ""));
+        long numVaga = (long) txtNumVaga.getValue();
+
+        try {
+            BufferedWriter bw;
+            try (FileWriter fw = new FileWriter(arquivo, true)) {
+                bw = new BufferedWriter(fw);
+                fw.write(dono + ";" + numVaga + ";" + estadoVaga + ";" + valorAlguel + ";\n");
+            }
+            bw.close();
+
+        } catch (IOException e) {
+
+            System.out.println("Erro ao escrever no arquivo");
+
+        }
+        return "VAGA CADASTRADA COM SUCESSO";
     }
 
     /**
@@ -37,16 +93,18 @@ public class CadastrarVaga extends javax.swing.JFrame {
         txtCpfVaga = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        txtValorAluguel = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        estadoLivre = new javax.swing.JRadioButton();
+        estadoIndisponivel = new javax.swing.JRadioButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtNumVaga = new javax.swing.JFormattedTextField();
         btnSalvarCadastroPessoa = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro Cliente");
+        setTitle("Cadastrar Vaga");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Cadastrados"));
 
@@ -61,23 +119,27 @@ public class CadastrarVaga extends javax.swing.JFrame {
         jLabel5.setText("Valor Aluguel:");
 
         try {
-            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("R$ #.###")));
+            txtValorAluguel.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("R$ #.###")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtValorAluguel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextField1ActionPerformed(evt);
+                txtValorAluguelActionPerformed(evt);
             }
         });
 
         jLabel1.setText("Estado de Ocupação da Vaga:");
 
-        estadoVaga.add(jRadioButton1);
-        jRadioButton1.setText("Livre");
+        estadoVaga.add(estadoLivre);
+        estadoLivre.setText("Livre");
 
-        estadoVaga.add(jRadioButton2);
-        jRadioButton2.setText("Indisponivel");
+        estadoVaga.add(estadoIndisponivel);
+        estadoIndisponivel.setText("Indisponivel");
+
+        jLabel2.setText("Vaga :");
+
+        txtNumVaga.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -92,24 +154,31 @@ public class CadastrarVaga extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton1))
+                    .addComponent(estadoIndisponivel)
+                    .addComponent(estadoLivre))
                 .addGap(14, 14, 14))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(223, 223, 223)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(192, 192, 192)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtValorAluguel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNumVaga, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(estadoLivre)
                         .addGap(8, 8, 8)
-                        .addComponent(jRadioButton2))
+                        .addComponent(estadoIndisponivel))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(jLabel1))
@@ -118,14 +187,18 @@ public class CadastrarVaga extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCpfVaga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtNumVaga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                    .addComponent(txtValorAluguel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19))
         );
 
-        btnSalvarCadastroPessoa.setText("Salvar");
+        btnSalvarCadastroPessoa.setText("Cadastrar");
         btnSalvarCadastroPessoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarCadastroPessoaActionPerformed(evt);
@@ -176,12 +249,12 @@ public class CadastrarVaga extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvarCadastroPessoa)
                     .addComponent(jButton3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel4Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnSalvarCadastroPessoa, jButton2, jButton3});
@@ -202,10 +275,18 @@ public class CadastrarVaga extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarCadastroPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarCadastroPessoaActionPerformed
-
-        
-        
-        
+        try {
+            if (compararPessoa(txtCpfVaga.getText()) != true) {
+                JOptionPane.showMessageDialog(null, "CPF NÃO CADASTRADO");
+            } else {
+                JOptionPane.showMessageDialog(null, salvarVaga());
+                txtCpfVaga.setText("");
+                txtNumVaga.setText("");
+                txtValorAluguel.setText("");
+            }
+        } catch (ErroDeLeituraException ex) {
+            Logger.getLogger(CadastrarVaga.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSalvarCadastroPessoaActionPerformed
 
     private void jButton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseExited
@@ -218,9 +299,9 @@ public class CadastrarVaga extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2MouseClicked
 
-    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+    private void txtValorAluguelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorAluguelActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+    }//GEN-LAST:event_txtValorAluguelActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         System.exit(0);
@@ -278,17 +359,19 @@ public class CadastrarVaga extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvarCadastroPessoa;
+    private javax.swing.JRadioButton estadoIndisponivel;
+    private javax.swing.JRadioButton estadoLivre;
     private javax.swing.ButtonGroup estadoVaga;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JFormattedTextField txtCpfVaga;
+    private javax.swing.JFormattedTextField txtNumVaga;
+    private javax.swing.JFormattedTextField txtValorAluguel;
     // End of variables declaration//GEN-END:variables
 }

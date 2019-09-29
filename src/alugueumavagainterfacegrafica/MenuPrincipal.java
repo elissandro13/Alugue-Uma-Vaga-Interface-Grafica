@@ -5,16 +5,26 @@
  */
 package alugueumavagainterfacegrafica;
 
+import Excecoes.ErroDeLeituraException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import models.LerArquivo;
+import models.Pessoa;
+
 /**
  *
  * @author aluno
  */
 public class MenuPrincipal extends javax.swing.JFrame {
+    private LerArquivo lerArquivo;
 
     /**
      * Creates new form NewJFrame
      */
-    public MenuPrincipal() {
+    public MenuPrincipal(){
+        lerArquivo = new LerArquivo();
         initComponents();
     }
     
@@ -32,17 +42,20 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnCadastrarVaga = new javax.swing.JButton();
-        btnVisualizarVaga = new javax.swing.JButton();
         btnCadastrarPessoa = new javax.swing.JButton();
-        btnPesquisarPessoa = new javax.swing.JButton();
         btnVisualizarPessoa = new javax.swing.JButton();
-        btnPesquisarVaga = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
 
         label1.setText("label1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu Principal");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                pessoasArray(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("FreeMono", 1, 18)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/page.png"))); // NOI18N
@@ -59,13 +72,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnVisualizarVaga.setText("Visualizar Vagas");
-        btnVisualizarVaga.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVisualizarVagaActionPerformed(evt);
-            }
-        });
-
         btnCadastrarPessoa.setText("Cadastrar Pessoa");
         btnCadastrarPessoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,24 +79,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnPesquisarPessoa.setText("Pesquisar Pessoa");
-        btnPesquisarPessoa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisarPessoaActionPerformed(evt);
-            }
-        });
-
-        btnVisualizarPessoa.setText("Visualizar Pessoas");
+        btnVisualizarPessoa.setText("Visualizar");
         btnVisualizarPessoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVisualizarPessoaActionPerformed(evt);
-            }
-        });
-
-        btnPesquisarVaga.setText("Pesquisar Vaga");
-        btnPesquisarVaga.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisarVagaActionPerformed(evt);
             }
         });
 
@@ -108,33 +100,31 @@ public class MenuPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnVisualizarPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(126, 126, 126))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnVisualizarVaga, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnCadastrarVaga, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnPesquisarVaga, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(56, 56, 56))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
+                                .addGap(59, 59, 59)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(btnCadastrarVaga, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(56, 56, 56)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(btnCadastrarPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPesquisarPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnVisualizarPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(183, 183, 183)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(164, 164, 164)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCadastrarPessoa, btnCadastrarVaga, btnPesquisarPessoa, btnPesquisarVaga, btnVisualizarPessoa, btnVisualizarVaga});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCadastrarPessoa, btnCadastrarVaga, btnVisualizarPessoa});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,22 +138,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrarVaga, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCadastrarPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPesquisarPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPesquisarVaga, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnVisualizarVaga, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVisualizarPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnVisualizarPessoa, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                .addGap(18, 18, 18))
+                .addComponent(jButton1)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnCadastrarPessoa, btnCadastrarVaga, btnPesquisarPessoa, btnPesquisarVaga, btnVisualizarPessoa, btnVisualizarVaga});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnCadastrarPessoa, btnCadastrarVaga, btnVisualizarPessoa});
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarVagaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarVagaActionPerformed
@@ -172,39 +157,38 @@ public class MenuPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCadastrarVagaActionPerformed
 
-    private void btnVisualizarVagaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarVagaActionPerformed
-        MenuVisualizarPessoas menuVisualizarPessoas = new MenuVisualizarPessoas();
-        menuVisualizarPessoas.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnVisualizarVagaActionPerformed
-
     private void btnCadastrarPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarPessoaActionPerformed
         MenuCadastrarPessoa menuCadastrarPessoa = new MenuCadastrarPessoa();
         menuCadastrarPessoa.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCadastrarPessoaActionPerformed
 
-    private void btnPesquisarPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarPessoaActionPerformed
-        MenuPesquisarPessoa menuPesquisarPessoa = new MenuPesquisarPessoa();
-        menuPesquisarPessoa.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnPesquisarPessoaActionPerformed
-
     private void btnVisualizarPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarPessoaActionPerformed
-        MenuVisualizarPessoas menuVisualizarPessoa = new MenuVisualizarPessoas();
-        menuVisualizarPessoa.setVisible(true);
+        MenuVisualizar menuVisualizar = new MenuVisualizar();
+        menuVisualizar.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVisualizarPessoaActionPerformed
-
-    private void btnPesquisarVagaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarVagaActionPerformed
-        MenuPesquisarVaga menuPesquisarVaga = new MenuPesquisarVaga();
-        menuPesquisarVaga.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnPesquisarVagaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void pessoasArray(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_pessoasArray
+
+        try {
+            List<Pessoa> pessoas = lerArquivo.read();
+            
+            for (Pessoa pessoa : pessoas) {
+                    pessoa.getNome();
+                    pessoa.getCpf();
+                    pessoa.getSexo();
+                    pessoa.getSaldo();
+                    pessoa.getVaga();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MenuVisualizar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_pessoasArray
 
     /**
      * @param args the command line arguments
@@ -245,10 +229,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrarPessoa;
     private javax.swing.JButton btnCadastrarVaga;
-    private javax.swing.JButton btnPesquisarPessoa;
-    private javax.swing.JButton btnPesquisarVaga;
     private javax.swing.JButton btnVisualizarPessoa;
-    private javax.swing.JButton btnVisualizarVaga;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
