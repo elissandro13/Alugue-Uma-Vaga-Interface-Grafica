@@ -11,3 +11,4 @@ kkkk;Masculino;823.098.091-28;2381.0;
 seila;Feminino;321.738.902-12;4217.0;
 kklo;Masculino;283.190.390-21;6217.0;
 kiliueo;Feminino;214.878.937-82;6512.0;
+Rachel Carolina;Feminino;666.767.666-50;2.0;

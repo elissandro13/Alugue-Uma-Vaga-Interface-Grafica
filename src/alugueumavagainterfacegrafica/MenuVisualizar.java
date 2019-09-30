@@ -22,6 +22,13 @@ import models.Vaga;
  * @author Arthur Nunes
  */
 public class MenuVisualizar extends javax.swing.JFrame {
+    
+    public void botaoBuscar(){
+        DefaultTableModel cadastroPessoa = (DefaultTableModel) jTableCadastrados.getModel();
+        cadastroPessoa.setNumRows(0);
+        preencherTabela();
+        buscarNome(txtBuscarNome.getText());
+    }
 
     public void buscarNome(String nome) {
         DefaultTableModel cadastroPessoa = (DefaultTableModel) jTableCadastrados.getModel();
@@ -102,6 +109,11 @@ public class MenuVisualizar extends javax.swing.JFrame {
         });
 
         txtBuscarNome.setToolTipText("");
+        txtBuscarNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtBuscarNomeKeyPressed(evt);
+            }
+        });
 
         buscarPessoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
         buscarPessoa.setText("Buscar");
@@ -238,11 +250,14 @@ public class MenuVisualizar extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void buscarPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarPessoaActionPerformed
-        DefaultTableModel cadastroPessoa = (DefaultTableModel) jTableCadastrados.getModel();
-        cadastroPessoa.setNumRows(0);
-        preencherTabela();
-        buscarNome(txtBuscarNome.getText());
+        botaoBuscar();
     }//GEN-LAST:event_buscarPessoaActionPerformed
+
+    private void txtBuscarNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarNomeKeyPressed
+        if(evt.getKeyCode() == evt.VK_ENTER){
+           botaoBuscar();
+        }
+    }//GEN-LAST:event_txtBuscarNomeKeyPressed
 
     /**
      * @param args the command line arguments

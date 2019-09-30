@@ -1,16 +1,22 @@
 package alugueumavagainterfacegrafica;
 
+import Excecoes.ErroDeLeituraException;
 import javax.swing.JOptionPane;
 import models.*;
 import dao.*;
 import java.io.*;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MenuCadastrarPessoa extends javax.swing.JFrame {
 
     File arquivo = new File("arquivo.txt");
+    private LerArquivo lerArquivo;
 
     public MenuCadastrarPessoa() {
         initComponents();
+        this.lerArquivo = new LerArquivo();
     }
 
     public String salvar() {
@@ -29,6 +35,17 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
             System.out.println("Erro ao escrever o arquivo");
         }
         return "CADASTRADO COM SUCESSO";
+    }
+
+    public boolean verificaCPF(String cpf) throws ErroDeLeituraException {
+        List<Pessoa> pessoas = lerArquivo.read();
+        for (int i = 0; i < pessoas.size(); i++) {
+            Pessoa p = (Pessoa) pessoas.get(i);
+            if (p.getCpf().equals(cpf)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -71,6 +88,11 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCpfCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCpfCadastrarActionPerformed(evt);
+            }
+        });
 
         boxSexoCadastrar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Feminino" }));
         boxSexoCadastrar.addActionListener(new java.awt.event.ActionListener() {
@@ -226,11 +248,19 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarCadastroPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarCadastroPessoaActionPerformed
-        JOptionPane.showMessageDialog(null, salvar());
-        txtNomeCadastrar.setText("");
-        txtCpfCadastrar.setText("");
-        txtSaldoCadastrarNome.setText("");
-
+        try {
+            if (verificaCPF(txtCpfCadastrar.getText()) == true) {
+                txtCpfCadastrar.setText("");
+                JOptionPane.showMessageDialog(null, "CPF JÁ CADASTRADO");
+            } else {
+                JOptionPane.showMessageDialog(null, salvar());
+                txtNomeCadastrar.setText("");
+                txtCpfCadastrar.setText("");
+                txtSaldoCadastrarNome.setText("");
+            }
+        } catch (ErroDeLeituraException ex) {
+            Logger.getLogger(MenuCadastrarPessoa.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSalvarCadastroPessoaActionPerformed
 
     private void boxSexoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxSexoCadastrarActionPerformed
@@ -262,6 +292,10 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
     private void txtNomeCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeCadastrarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeCadastrarActionPerformed
+
+    private void txtCpfCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCpfCadastrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCpfCadastrarActionPerformed
 
     /**
      * @param args the command line arguments

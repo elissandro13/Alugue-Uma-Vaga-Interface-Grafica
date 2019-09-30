@@ -1,2 +1,4 @@
 Lizim;31;Livre;232.0;
 Lizim;321;Livre;2222.0;
+dsa;13;Livre;827.0;
+Rachel Carolina;2;Indisponivel;1.0;
