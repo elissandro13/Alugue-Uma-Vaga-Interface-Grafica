@@ -72,7 +72,7 @@ public class MenuCadastrarPessoa extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        boxSexoCadastrar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione", "Masculino", "Feminino" }));
+        boxSexoCadastrar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Feminino" }));
         boxSexoCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 boxSexoCadastrarActionPerformed(evt);

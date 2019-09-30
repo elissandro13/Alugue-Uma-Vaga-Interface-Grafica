@@ -40,7 +40,6 @@ public class VisualizarVagas extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         JTableVagas = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Visualização de Vagas");
         setAlwaysOnTop(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
