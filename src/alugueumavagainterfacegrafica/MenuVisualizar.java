@@ -22,6 +22,26 @@ import models.Vaga;
  * @author Arthur Nunes
  */
 public class MenuVisualizar extends javax.swing.JFrame {
+    private AlugarPainel alugarPainel;
+    public MenuVisualizar(boolean habilitarSelecaoPessoa,boolean habilitarVisualizarVagas, AlugarPainel alugarPainel) {
+        this.lerArquivo = new LerArquivo();
+        initComponents();
+        btnSelecionarPessoa.setVisible(habilitarSelecaoPessoa);
+        btnVisualizarVagas.setVisible(habilitarVisualizarVagas);
+        this.alugarPainel = alugarPainel;
+    }
+    
+    public MenuVisualizar() {
+        this.lerArquivo = new LerArquivo();
+        initComponents();
+        btnSelecionarPessoa.setVisible(false);
+    }
+    
+    public void CompletarDadosPessoa(){
+        Object nomeCliente = this.jTableCadastrados.getModel().getValueAt(this.jTableCadastrados.getSelectedRow(), 0);
+        Object cpfCliente = this.jTableCadastrados.getModel().getValueAt(this.jTableCadastrados.getSelectedRow(), 1);
+        this.alugarPainel.preencherDadosPessoa(nomeCliente.toString(), cpfCliente.toString());
+    }
     
     public void botaoBuscar(){
         DefaultTableModel cadastroPessoa = (DefaultTableModel) jTableCadastrados.getModel();
@@ -77,10 +97,7 @@ public class MenuVisualizar extends javax.swing.JFrame {
     /**
      * Creates new form MenuVisualizar
      */
-    public MenuVisualizar() {
-        this.lerArquivo = new LerArquivo();
-        initComponents();
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -91,14 +108,16 @@ public class MenuVisualizar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSlider1 = new javax.swing.JSlider();
         txtBuscarNome = new javax.swing.JTextField();
         buscarPessoa = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCadastrados = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        voltarVisualizarPessoas = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnVisualizarVagas = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        btnSelecionarPessoa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Visualizar Informações");
@@ -147,13 +166,13 @@ public class MenuVisualizar extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTableCadastrados.setCellSelectionEnabled(true);
+        jTableCadastrados.setColumnSelectionAllowed(false);
         jScrollPane1.setViewportView(jTableCadastrados);
 
-        jButton2.setText("Voltar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        voltarVisualizarPessoas.setText("Voltar");
+        voltarVisualizarPessoas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                voltarVisualizarPessoasActionPerformed(evt);
             }
         });
 
@@ -165,14 +184,21 @@ public class MenuVisualizar extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Visualizar Vagas");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnVisualizarVagas.setText("Visualizar Vagas");
+        btnVisualizarVagas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnVisualizarVagasActionPerformed(evt);
             }
         });
 
         jLabel1.setText("Buscar por nome:");
+
+        btnSelecionarPessoa.setText("Selecionar Pessoa");
+        btnSelecionarPessoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelecionarPessoaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,10 +211,12 @@ public class MenuVisualizar extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
+                        .addComponent(voltarVisualizarPessoas))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton4))
+                        .addContainerGap()
+                        .addComponent(btnSelecionarPessoa)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnVisualizarVagas))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(172, 172, 172)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,14 +229,14 @@ public class MenuVisualizar extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton2, jButton3});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton3, voltarVisualizarPessoas});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(voltarVisualizarPessoas)
                     .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
@@ -216,13 +244,15 @@ public class MenuVisualizar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBuscarNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buscarPessoa))
-                .addGap(10, 10, 10)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVisualizarVagas)
+                    .addComponent(btnSelecionarPessoa))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton2, jButton3});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton3, voltarVisualizarPessoas});
 
         pack();
         setLocationRelativeTo(null);
@@ -232,11 +262,11 @@ public class MenuVisualizar extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void voltarVisualizarPessoasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVisualizarPessoasActionPerformed
         MenuPrincipal mp = new MenuPrincipal();
         mp.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_voltarVisualizarPessoasActionPerformed
 
 
     private void lerArquivo(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_lerArquivo
@@ -244,10 +274,11 @@ public class MenuVisualizar extends javax.swing.JFrame {
     }//GEN-LAST:event_lerArquivo
 
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnVisualizarVagasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarVagasActionPerformed
         VisualizarVagas vv = new VisualizarVagas();
         vv.setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnVisualizarVagasActionPerformed
 
     private void buscarPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarPessoaActionPerformed
         botaoBuscar();
@@ -258,6 +289,11 @@ public class MenuVisualizar extends javax.swing.JFrame {
            botaoBuscar();
         }
     }//GEN-LAST:event_txtBuscarNomeKeyPressed
+
+    private void btnSelecionarPessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarPessoaActionPerformed
+        CompletarDadosPessoa();
+        this.dispose();
+    }//GEN-LAST:event_btnSelecionarPessoaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -293,13 +329,15 @@ public class MenuVisualizar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSelecionarPessoa;
+    private javax.swing.JButton btnVisualizarVagas;
     private javax.swing.JButton buscarPessoa;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSlider jSlider1;
     private javax.swing.JTable jTableCadastrados;
     private javax.swing.JTextField txtBuscarNome;
+    private javax.swing.JButton voltarVisualizarPessoas;
     // End of variables declaration//GEN-END:variables
 }
