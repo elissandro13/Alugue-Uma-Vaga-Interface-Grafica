@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import models.LerArquivoVaga;
+import dao.ControleArquivoVaga;
 import models.Vaga;
 
 /**
@@ -19,13 +19,13 @@ import models.Vaga;
  * @author Arthur Nunes
  */
 public class VisualizarVagas extends javax.swing.JFrame {
-    private LerArquivoVaga lerArquivoVaga;
+    private ControleArquivoVaga lerArquivoVaga;
 
     /**
      * Creates new form VisualizarVagas
      */
     public VisualizarVagas() {
-        this.lerArquivoVaga = new LerArquivoVaga();
+        this.lerArquivoVaga = new ControleArquivoVaga();
         initComponents();
     }
 

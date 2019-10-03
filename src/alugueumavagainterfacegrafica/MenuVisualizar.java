@@ -12,8 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import models.LerArquivo;
-import models.LerArquivoVaga;
+import dao.ControleArquivoPessoa;
+import dao.ControleArquivoVaga;
 import models.Pessoa;
 import models.Vaga;
 
@@ -24,7 +24,7 @@ import models.Vaga;
 public class MenuVisualizar extends javax.swing.JFrame {
     private AlugarPainel alugarPainel;
     public MenuVisualizar(boolean habilitarSelecaoPessoa,boolean habilitarVisualizarVagas, AlugarPainel alugarPainel) {
-        this.lerArquivo = new LerArquivo();
+        this.lerArquivo = new ControleArquivoPessoa();
         initComponents();
         btnSelecionarPessoa.setVisible(habilitarSelecaoPessoa);
         btnVisualizarVagas.setVisible(habilitarVisualizarVagas);
@@ -32,7 +32,7 @@ public class MenuVisualizar extends javax.swing.JFrame {
     }
     
     public MenuVisualizar() {
-        this.lerArquivo = new LerArquivo();
+        this.lerArquivo = new ControleArquivoPessoa();
         initComponents();
         btnSelecionarPessoa.setVisible(false);
     }
@@ -92,7 +92,7 @@ public class MenuVisualizar extends javax.swing.JFrame {
         }
     }
 
-    private LerArquivo lerArquivo;
+    private ControleArquivoPessoa lerArquivo;
 
     /**
      * Creates new form MenuVisualizar

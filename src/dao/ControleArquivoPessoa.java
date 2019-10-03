@@ -1,10 +1,11 @@
-package models;
+package dao;
 
 import Excecoes.ErroDeLeituraException;
 import java.io.*;
 import java.util.ArrayList;
+import models.Pessoa;
 
-public class LerArquivo {
+public class ControleArquivoPessoa {
     
     public ArrayList<Pessoa> read() throws ErroDeLeituraException{
         ArrayList<Pessoa> pessoas = new ArrayList();

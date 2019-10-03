@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import models.LerArquivo;
+import dao.ControleArquivoPessoa;
 import models.Pessoa;
 import models.Vaga;
 
@@ -21,13 +21,13 @@ import models.Vaga;
 public class CadastrarVaga extends javax.swing.JFrame {
     File arquivo = new File("vaga.txt");
     Pessoa pessoas = new Pessoa();
-    private LerArquivo lerArquivo;
+    private ControleArquivoPessoa lerArquivo;
 
     /**
      * Creates new form TelaCadastroCliente
      */
     public CadastrarVaga(){
-        this.lerArquivo = new LerArquivo();
+        this.lerArquivo = new ControleArquivoPessoa();
         initComponents();
     }
 

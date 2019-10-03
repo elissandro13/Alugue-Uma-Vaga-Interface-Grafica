@@ -1,5 +1,6 @@
 package alugueumavagainterfacegrafica;
 
+import dao.ControleArquivoPessoa;
 import Excecoes.ErroDeLeituraException;
 import javax.swing.JOptionPane;
 import models.*;
@@ -12,11 +13,11 @@ import java.util.logging.Logger;
 public class MenuCadastrarPessoa extends javax.swing.JFrame {
 
     File arquivo = new File("arquivo.txt");
-    private LerArquivo lerArquivo;
+    private ControleArquivoPessoa lerArquivo;
 
     public MenuCadastrarPessoa() {
         initComponents();
-        this.lerArquivo = new LerArquivo();
+        this.lerArquivo = new ControleArquivoPessoa();
     }
 
     public String salvar() {

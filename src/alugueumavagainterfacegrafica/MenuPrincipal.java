@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import models.LerArquivo;
+import dao.ControleArquivoPessoa;
 import models.Pessoa;
 
 /**
@@ -18,13 +18,13 @@ import models.Pessoa;
  * @author aluno
  */
 public class MenuPrincipal extends javax.swing.JFrame {
-    private LerArquivo lerArquivo;
+    private ControleArquivoPessoa lerArquivo;
 
     /**
      * Creates new form NewJFrame
      */
     public MenuPrincipal(){
-        lerArquivo = new LerArquivo();
+        lerArquivo = new ControleArquivoPessoa();
         initComponents();
     }
     

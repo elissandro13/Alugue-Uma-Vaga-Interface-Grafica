@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package models;
+package dao;
 
 import Excecoes.ErroDeLeituraException;
 import java.io.BufferedReader;
@@ -11,12 +11,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import models.Vaga;
 
 /**
  *
  * @author Arthur Nunes
  */
-public class LerArquivoVaga {
+public class ControleArquivoVaga {
     public ArrayList<Vaga> read() throws ErroDeLeituraException{
         ArrayList<Vaga> vagas = new ArrayList();
         try{
